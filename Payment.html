@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Factory Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    label, select, button {
+      display: block;
+      margin: 10px 0;
+    }
+    .output {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Payment Factory Example</h1>
+
+  <label for="paymentType">Select Payment Type:</label>
+  <select id="paymentType">
+    <option value="UPI">UPI</option>
+    <option value="Wallet">Wallet</option>
+    <option value="COD">Cash on Delivery</option>
+    <option value="CreditCard">Credit Card</option>
+  </select>
+
+  <button onclick="processPayment()">Make Payment</button>
+
+  <div class="output" id="output"></div>
+
+  <script>
+    // Payment Classes
+    class UPI {
+      pay() {
+        return "Paid using UPI.";
+      }
+    }
+
+    class Wallet {
+      pay() {
+        return "Paid using Wallet.";
+      }
+    }
+
+    class COD {
+      pay() {
+        return "Payment will be made via Cash on Delivery.";
+      }
+    }
+
+    class CreditCard {
+      pay() {
+        return "Paid using Credit Card.";
+      }
+    }
+
+    // Payment Factory
+    class PaymentFactory {
+      static createPayment(type) {
+        switch(type) {
+          case 'UPI':
+            return new UPI();
+          case 'Wallet':
+            return new Wallet();
+          case 'COD':
+            return new COD();
+          case 'CreditCard':
+            return new CreditCard();
+          default:
+            throw new Error('Unsupported payment type');
+        }
+      }
+    }
+
+    // Process Payment
+    function processPayment() {
+      const type = document.getElementById('paymentType').value;
+      try {
+        const payment = PaymentFactory.createPayment(type);
+        document.getElementById('output').innerText = payment.pay();
+      } catch (error) {
+        document.getElementById('output').innerText = error.message;
+      }
+    }
+  </script>
+
+</body>
+</html>
